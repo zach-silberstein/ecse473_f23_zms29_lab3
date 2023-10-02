@@ -7,7 +7,7 @@
 To run the project, run the display.launch file by:  
 `roslaunch navvis_description display.launch`  
   
-The launch file has the following tags:
+The launch file has the following args:
 * use_xacro (default false)
 * use_gui (default true)
 * use_robot_state_publisher (default true)
