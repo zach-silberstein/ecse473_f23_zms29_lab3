@@ -1,47 +1,27 @@
 <launch>
     <!-- Create an argument to determine whether to use a XACRO or URDF file. -->
-    <arg name = "use_xacro" default = "false" />
-    <!-- Create an argument to determine whether to use joint_state_publisher_gui. -->
-    <arg name = "use_gui" default = "true" />
+    <arg name = "use_xacro" default = "true" />
     <!-- Create an argument to determine whether to use use_robot_state_publisher. -->
     <arg name = "use_robot_state_publisher" default = "true" />
     <!-- Create an argument to determine whether to use launch the updated robot and lab3 changes. -->
     <arg name = "use_new_xacro" default = "true" />
+    <!-- Create an argument to determine whether to use sim time. -->
+    <arg name = "use_sim_time" default = "true" />
 
-    <group if = "$(arg use_new_xacro)">
+    <!-- Include the old launch file and pass it tags-->
+    <include file="$(find navvis_description)/launch/display.launch">
+        <arg name = "use_xacro" value  = "$(arg use_xacro)"/>
+        <arg name = "use_robot_state_publisher" value  = "$(arg use_robot_state_publisher)"/>
         <!-- Location of the RVIZ config file to use -->
-        <arg name = "rviz_config_file" default = "$(find lab3)/config/config.rviz" />
-        <!-- The filename can be passed into the launch file to override the default. -->
-        <arg name = "filename" default = "robot.xacro" />
-        <!-- The full path of the URDF/XACRO file can be passed into the launch file instead. -->
-        <arg name = "file" default = "$(find lab3)/urdf/$(arg filename)" />
-        <!-- Use the file argument as the name of the file used to set the /robot_description
-            parameter on the parameter server -->
-        <param name = "robot_description" command = "$(find xacro)/xacro $(arg file)" />
-        <param if= "$(arg use_gui)" name = "use_sim_time" value = "true" />
-        <!-- Run the robot_state_publisher. -->
-        <node if = "$(arg use_robot_state_publisher)" pkg = "robot_state_publisher" type = "robot_state_publisher"
-            name = "robot_state_publisher" />
+        <arg name = "rviz_config_file" value = "$(find lab3)/config/config.rviz" />
+        <!-- Override the xacro file-->
+        <arg name = "file" value = "$(find lab3)/urdf/robot.xacro" />
+    </include>        
 
-        <!-- Run RVIZ with a configuration file. If RVIZ is closed, close everything. -->
-        <node pkg = "rviz" type = "rviz" name = "rviz" args = "-d $(arg rviz_config_file)" required = "true"
-            />
+    <!-- Load map file-->
+    <arg name = "map" default =" $(find maps_glennan)/maps/glennan5_map.yaml" />
+    <node name = "map_server" pkg = "map_server" type = "map_server" args = "$(arg map)" />
 
-        <!-- Launch joint_state_publisher_gui or joint_state_publisher-->
-        <node if = "$(arg use_gui)" pkg = "joint_state_publisher_gui" type = "joint_state_publisher_gui"
-            name = "joint_state_publisher_gui" />
-        <node unless = "$(arg use_gui)" pkg = "joint_state_publisher" type = "joint_state_publisher"
-            name = "joint_state_publisher" />
-
-    </group>
-        
-    <group unless = "$(arg use_new_xacro)">
-        <!-- Include the old launch file and pass it tags-->
-        <include file="$(find navvis_description)/launch/display.launch">
-            <arg name = "use_xacro" default  = "$(arg use_xacro)"/>
-            <arg name = "use_gui" default  = "$(arg use_gui)"/>
-            <arg name = "use_robot_state_publisher" default  = "$(arg use_robot_state_publisher)"/>
-        </include>
-    </group>
-
+    <!--Use sim time if needed-->
+    <param if = "$(arg use_sim_time)" name = "/use_sim_time" value = "true" />
 </launch>
