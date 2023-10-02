@@ -18,6 +18,7 @@
         <!-- Use the file argument as the name of the file used to set the /robot_description
             parameter on the parameter server -->
         <param name = "robot_description" command = "$(find xacro)/xacro $(arg file)" />
+        <param if= "$(arg use_gui)" name = "use_sim_time" value = "true" />
         <!-- Run the robot_state_publisher. -->
         <node if = "$(arg use_robot_state_publisher)" pkg = "robot_state_publisher" type = "robot_state_publisher"
             name = "robot_state_publisher" />
