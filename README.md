@@ -13,8 +13,7 @@ The launch file has the following args:
 * use_sim_time (default true)
 
   
-use_xacro:  
-This command does nothing if use_new_xacro is true  
+use_xacro:
 If true, then the updated xacro file of the robot will be used  
 If false, then the out dated urdf file of the robot will be used  
 
