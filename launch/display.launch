@@ -3,8 +3,6 @@
     <arg name = "use_xacro" default = "true" />
     <!-- Create an argument to determine whether to use use_robot_state_publisher. -->
     <arg name = "use_robot_state_publisher" default = "true" />
-    <!-- Create an argument to determine whether to use launch the updated robot and lab3 changes. -->
-    <arg name = "use_new_xacro" default = "true" />
     <!-- Create an argument to determine whether to use sim time. -->
     <arg name = "use_sim_time" default = "true" />
 
